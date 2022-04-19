@@ -14,7 +14,7 @@ import java.util.List;
 public class Order {
   @Column(name = "order_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int orderId;
 
   @ManyToOne

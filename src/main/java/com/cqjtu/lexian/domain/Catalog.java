@@ -17,7 +17,7 @@ public class Catalog implements Serializable {
 
   @Column(name = "catalog_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int catalog_id;
 
   @Column(name = "name")

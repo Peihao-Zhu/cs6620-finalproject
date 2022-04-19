@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class OrderItem {
   @Column(name = "orderitem_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int orderItemId;
 
   @ManyToOne

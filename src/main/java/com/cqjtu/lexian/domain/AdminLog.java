@@ -14,7 +14,7 @@ public class AdminLog {
 
   @Column(name = "adminlog_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int adminLogId;
 
   @Column(name = "admin_id")

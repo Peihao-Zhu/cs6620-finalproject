@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class PayWay {
   @Column(name = "payway_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int paywayId;
 
   @Column(name = "name")

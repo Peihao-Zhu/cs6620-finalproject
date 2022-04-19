@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Attention {
   @Column(name = "att_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int attId;
 
   @ManyToOne()

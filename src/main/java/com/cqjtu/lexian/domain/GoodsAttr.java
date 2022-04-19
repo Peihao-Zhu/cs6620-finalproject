@@ -15,7 +15,7 @@ public class GoodsAttr implements Serializable {
 
   @Column(name = "goodsattr_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int goodsAttrId;
 
   @ManyToOne

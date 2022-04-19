@@ -1,5 +1,7 @@
 package com.cqjtu.lexian.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,12 +14,13 @@ import java.util.List;
  */
 @Entity
 @Table(name = "goods")
+@Data
 public class Goods implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Column(name = "goods_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int goodsId;
 
   @Column(name = "name")
@@ -145,13 +148,13 @@ public class Goods implements Serializable {
     this.saleCount = saleCount;
   }
 
-  public List<GoodsAttr> getGoodsAttrs() {
-    return goodsAttrs;
-  }
-
-  public void setGoodsAttrs(List<GoodsAttr> goodsAttrs) {
-    this.goodsAttrs = goodsAttrs;
-  }
+//  public List<GoodsAttr> getGoodsAttrs() {
+//    return goodsAttrs;
+//  }
+//
+//  public void setGoodsAttrs(List<GoodsAttr> goodsAttrs) {
+//    this.goodsAttrs = goodsAttrs;
+//  }
 
   @Override
   public String toString() {
@@ -181,8 +184,6 @@ public class Goods implements Serializable {
         + saleCount
         + ", category="
         + category
-        + ", goodsAttrs="
-        + goodsAttrs
         + '}';
   }
 }

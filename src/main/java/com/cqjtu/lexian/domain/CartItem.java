@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class CartItem {
   @Column(name = "cartitem_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int cartItemId;
 
   @ManyToOne

@@ -13,7 +13,7 @@ import java.util.Date;
 public class Comment {
   @Column(name = "comment_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int commentId;
 
   @Column(name = "cus_id")

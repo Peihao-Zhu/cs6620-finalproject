@@ -17,7 +17,7 @@ public class Category implements Serializable {
 
   @Column(name = "category_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int categoryId;
 
   @ManyToOne(

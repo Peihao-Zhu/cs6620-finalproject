@@ -13,23 +13,121 @@
 
  Date: 27/07/2020 18:27:27
 */
+Drop database if exists fresh_food;
+create database fresh_food;
+use fresh_food;
+
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+--
+-- Table structure for table `seckill_goods`
+--
+
+DROP TABLE IF EXISTS `seckill_goods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `seckill_goods` (
+                                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '秒杀的商品表',
+                                 `goods_id` bigint(20) DEFAULT NULL COMMENT '商品Id',
+                                 `miaosha_price` decimal(10,2) DEFAULT '0.00' COMMENT '秒杀价',
+                                 `stock_count` int(11) DEFAULT NULL COMMENT '库存数量',
+                                 `start_date` datetime DEFAULT NULL COMMENT '秒杀开始时间',
+                                 `end_date` datetime DEFAULT NULL COMMENT '秒杀结束时间',
+                                 PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `seckill_goods`
+--
+
+LOCK TABLES `seckill_goods` WRITE;
+/*!40000 ALTER TABLE `seckill_goods` DISABLE KEYS */;
+INSERT INTO `seckill_goods` VALUES (1,1,0.01,9,'2017-12-04 21:51:23','2017-12-31 21:51:27'),(2,2,0.01,9,'2017-12-04 21:40:14','2017-12-31 14:00:24'),(3,3,0.01,9,'2017-12-04 21:40:14','2017-12-31 14:00:24'),(4,4,0.01,9,'2017-12-04 21:40:14','2017-12-31 14:00:24');
+/*!40000 ALTER TABLE `seckill_goods` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+--
+-- Table structure for table `miaosha_order`
+--
+
+DROP TABLE IF EXISTS `seckill_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `seckill_order` (
+                                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                 `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+                                 `order_id` bigint(20) DEFAULT NULL COMMENT '订单ID',
+                                 `goods_id` bigint(20) DEFAULT NULL COMMENT '商品ID',
+                                 PRIMARY KEY (`id`),
+                                 UNIQUE KEY `u_uid_gid` (`user_id`,`goods_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1551 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `seckill_order`
+--
+
+LOCK TABLES `seckill_order` WRITE;
+/*!40000 ALTER TABLE `seckill_order` DISABLE KEYS */;
+INSERT INTO `seckill_order` VALUES (1547,2,1561,1),(1548,3,1562,2),(1549,2,1563,4),(1550,3,1564,3);
+/*!40000 ALTER TABLE `seckill_order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+--
+-- Table structure for table `order_info`
+--
+
+DROP TABLE IF EXISTS `seckill_order_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `seckill_order_info` (
+                                      `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                      `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+                                      `goods_id` bigint(20) DEFAULT NULL COMMENT '商品ID',
+                                      `delivery_addr_id` bigint(20) DEFAULT NULL COMMENT '收获地址ID',
+                                      `goods_name` varchar(16) DEFAULT NULL COMMENT '冗余过来的商品名称',
+                                      `goods_count` int(11) DEFAULT '0' COMMENT '商品数量',
+                                      `goods_price` decimal(10,2) DEFAULT '0.00' COMMENT '商品单价',
+                                      `order_channel` tinyint(4) DEFAULT '0' COMMENT '1pc，2android，3ios',
+                                      `status` tinyint(4) DEFAULT '0' COMMENT '订单状态，0新建未支付，1已支付，2已发货，3已收货，4已退款，5已完成',
+                                      `create_date` datetime DEFAULT NULL COMMENT '订单的创建时间',
+                                      `pay_date` datetime DEFAULT NULL COMMENT '支付时间',
+                                      PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1565 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `seckill_order_info`
+--
+
+LOCK TABLES `seckill_order_info` WRITE;
+/*!40000 ALTER TABLE `seckill_order_info` DISABLE KEYS */;
+INSERT INTO `seckill_order_info` VALUES (1561,2,1,NULL,'iphoneX',1,0.01,1,0,'2017-12-14 22:49:10',NULL),(1562,3,2,NULL,'华为Meta9',1,0.01,1,0,'2017-12-14 22:55:42',NULL),(1563,2,4,NULL,'小米6',1,0.01,1,0,'2017-12-16 16:19:23',NULL),(1564,3,3,NULL,'iphone8',1,0.01,1,0,'2017-12-16 16:35:20',NULL);
+/*!40000 ALTER TABLE `seckill_order_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 
 -- ----------------------------
 -- Table structure for admin
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
-  `admin_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '管理员编号',
-  `username` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '管理员用户名',
-  `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '管理员密码',
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '管理员姓名',
-  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '管理员电话',
-  `email` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '管理员邮箱',
-  `status` int(11) DEFAULT NULL COMMENT '账号可用状态',
-  PRIMARY KEY (`admin_id`)
+                         `admin_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '管理员编号',
+                         `username` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '管理员用户名',
+                         `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '管理员密码',
+                         `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '管理员姓名',
+                         `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '管理员电话',
+                         `email` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '管理员邮箱',
+                         `status` int(11) DEFAULT NULL COMMENT '账号可用状态',
+                         PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='后台管理员';
 
 -- ----------------------------
@@ -48,14 +146,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `adminlog`;
 CREATE TABLE `adminlog` (
-  `adminlog_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志编号',
-  `admin_id` bigint(20) DEFAULT NULL COMMENT '管理员编号',
-  `operate` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '操作名',
-  `content` varchar(400) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '操作内容',
-  `time` datetime DEFAULT NULL COMMENT '操作时间',
-  PRIMARY KEY (`adminlog_id`),
-  KEY `FK_Relationship_22` (`admin_id`),
-  CONSTRAINT `FK_Relationship_22` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`)
+                            `adminlog_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志编号',
+                            `admin_id` bigint(20) DEFAULT NULL COMMENT '管理员编号',
+                            `operate` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '操作名',
+                            `content` varchar(400) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '操作内容',
+                            `time` datetime DEFAULT NULL COMMENT '操作时间',
+                            PRIMARY KEY (`adminlog_id`),
+                            KEY `FK_Relationship_22` (`admin_id`),
+                            CONSTRAINT `FK_Relationship_22` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='管理员操作日志';
 
 -- ----------------------------
@@ -79,14 +177,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `attention`;
 CREATE TABLE `attention` (
-  `att_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '关注编号',
-  `cus_id` bigint(20) DEFAULT NULL COMMENT '顾客编号',
-  `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
-  PRIMARY KEY (`att_id`),
-  KEY `FK_Relationship_23` (`goods_id`),
-  KEY `FK_Relationship_7` (`cus_id`),
-  CONSTRAINT `FK_Relationship_23` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`),
-  CONSTRAINT `FK_Relationship_7` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`)
+                             `att_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '关注编号',
+                             `cus_id` bigint(20) DEFAULT NULL COMMENT '顾客编号',
+                             `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
+                             PRIMARY KEY (`att_id`),
+                             KEY `FK_Relationship_23` (`goods_id`),
+                             KEY `FK_Relationship_7` (`cus_id`),
+                             CONSTRAINT `FK_Relationship_23` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`),
+                             CONSTRAINT `FK_Relationship_7` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='商品关注';
 
 -- ----------------------------
@@ -102,15 +200,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `browserecord`;
 CREATE TABLE `browserecord` (
-  `record_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '浏览记录编号',
-  `cus_id` bigint(20) DEFAULT NULL COMMENT '顾客编号',
-  `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
-  `time` datetime NOT NULL COMMENT '记录时间',
-  PRIMARY KEY (`record_id`),
-  KEY `FK_Relationship_20` (`cus_id`),
-  KEY `FK_Relationship_21` (`goods_id`),
-  CONSTRAINT `FK_Relationship_20` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`),
-  CONSTRAINT `FK_Relationship_21` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`)
+                                `record_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '浏览记录编号',
+                                `cus_id` bigint(20) DEFAULT NULL COMMENT '顾客编号',
+                                `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
+                                `time` datetime NOT NULL COMMENT '记录时间',
+                                PRIMARY KEY (`record_id`),
+                                KEY `FK_Relationship_20` (`cus_id`),
+                                KEY `FK_Relationship_21` (`goods_id`),
+                                CONSTRAINT `FK_Relationship_20` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`),
+                                CONSTRAINT `FK_Relationship_21` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='浏览记录';
 
 -- ----------------------------
@@ -191,11 +289,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
-  `cart_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `cus_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`cart_id`),
-  KEY `FK_Relationship_13` (`cus_id`),
-  CONSTRAINT `FK_Relationship_13` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`)
+                        `cart_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                        `cus_id` bigint(20) DEFAULT NULL,
+                        PRIMARY KEY (`cart_id`),
+                        KEY `FK_Relationship_13` (`cus_id`),
+                        CONSTRAINT `FK_Relationship_13` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='购物车';
 
 -- ----------------------------
@@ -211,16 +309,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `cartitem`;
 CREATE TABLE `cartitem` (
-  `cartitem_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '购物车商品项编号',
-  `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
-  `cart_id` bigint(20) DEFAULT NULL COMMENT '购物车编号',
-  `num` double NOT NULL COMMENT '商品数量',
-  `selected` tinyint(1) DEFAULT NULL COMMENT '是否选中',
-  PRIMARY KEY (`cartitem_id`),
-  KEY `FK_Relationship_10` (`goods_id`),
-  KEY `FK_Relationship_9` (`cart_id`),
-  CONSTRAINT `FK_Relationship_10` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`),
-  CONSTRAINT `FK_Relationship_9` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`)
+                            `cartitem_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '购物车商品项编号',
+                            `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
+                            `cart_id` bigint(20) DEFAULT NULL COMMENT '购物车编号',
+                            `num` double NOT NULL COMMENT '商品数量',
+                            `selected` tinyint(1) DEFAULT NULL COMMENT '是否选中',
+                            PRIMARY KEY (`cartitem_id`),
+                            KEY `FK_Relationship_10` (`goods_id`),
+                            KEY `FK_Relationship_9` (`cart_id`),
+                            CONSTRAINT `FK_Relationship_10` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`),
+                            CONSTRAINT `FK_Relationship_9` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='购物车商品项';
 
 -- ----------------------------
@@ -236,12 +334,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `catalog`;
 CREATE TABLE `catalog` (
-  `catalog_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品目录编号',
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品目录名',
-  `des` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品目录描述',
-  `img` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品目录图',
-  `status` int(11) DEFAULT NULL COMMENT '商品目录可用状态',
-  PRIMARY KEY (`catalog_id`)
+                           `catalog_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品目录编号',
+                           `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品目录名',
+                           `des` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品目录描述',
+                           `img` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品目录图',
+                           `status` int(11) DEFAULT NULL COMMENT '商品目录可用状态',
+                           PRIMARY KEY (`catalog_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='商品目录';
 
 -- ----------------------------
@@ -265,12 +363,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
-  `category_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品大类编号',
-  `catalog_id` bigint(20) DEFAULT NULL COMMENT '商品大类所属目录编号',
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品大类名',
-  PRIMARY KEY (`category_id`),
-  KEY `FK_Relationship_1` (`catalog_id`),
-  CONSTRAINT `FK_Relationship_1` FOREIGN KEY (`catalog_id`) REFERENCES `catalog` (`catalog_id`) ON DELETE RESTRICT ON UPDATE CASCADE
+                            `category_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品大类编号',
+                            `catalog_id` bigint(20) DEFAULT NULL COMMENT '商品大类所属目录编号',
+                            `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品大类名',
+                            PRIMARY KEY (`category_id`),
+                            KEY `FK_Relationship_1` (`catalog_id`),
+                            CONSTRAINT `FK_Relationship_1` FOREIGN KEY (`catalog_id`) REFERENCES `catalog` (`catalog_id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='商品大类';
 
 -- ----------------------------
@@ -564,17 +662,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
-  `comment_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品评论编号',
-  `cus_id` bigint(20) DEFAULT NULL COMMENT '顾客编号',
-  `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
-  `content` varchar(400) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品评论内容',
-  `score` int(11) DEFAULT NULL COMMENT '商品评论分数',
-  `time` datetime DEFAULT NULL COMMENT '商品评论时间',
-  PRIMARY KEY (`comment_id`),
-  KEY `FK_Relationship_4` (`goods_id`),
-  KEY `FK_Relationship_6` (`cus_id`),
-  CONSTRAINT `FK_Relationship_4` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`),
-  CONSTRAINT `FK_Relationship_6` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`)
+                           `comment_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品评论编号',
+                           `cus_id` bigint(20) DEFAULT NULL COMMENT '顾客编号',
+                           `goods_id` bigint(20) DEFAULT NULL COMMENT '商品编号',
+                           `content` varchar(400) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品评论内容',
+                           `score` int(11) DEFAULT NULL COMMENT '商品评论分数',
+                           `time` datetime DEFAULT NULL COMMENT '商品评论时间',
+                           PRIMARY KEY (`comment_id`),
+                           KEY `FK_Relationship_4` (`goods_id`),
+                           KEY `FK_Relationship_6` (`cus_id`),
+                           CONSTRAINT `FK_Relationship_4` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`goods_id`),
+                           CONSTRAINT `FK_Relationship_6` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='商品评论';
 
 -- ----------------------------
@@ -613,18 +711,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
-  `cus_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '顾客编号',
-  `headimg` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客头像',
-  `username` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客用户名',
-  `nickname` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客呢称',
-  `realname` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客姓名',
-  `sex` int(11) DEFAULT NULL COMMENT '顾客性别',
-  `birth` datetime DEFAULT NULL COMMENT '顾客生日',
-  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客电话',
-  `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '顾客邮箱',
-  `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '顾客密码',
-  `status` int(11) DEFAULT NULL COMMENT '账号可用状态',
-  PRIMARY KEY (`cus_id`)
+                            `cus_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '顾客编号',
+                            `headimg` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客头像',
+                            `username` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客用户名',
+                            `nickname` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客呢称',
+                            `realname` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客姓名',
+                            `sex` int(11) DEFAULT NULL COMMENT '顾客性别',
+                            `birth` datetime DEFAULT NULL COMMENT '顾客生日',
+                            `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '顾客电话',
+                            `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '顾客邮箱',
+                            `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '顾客密码',
+                            `status` int(11) DEFAULT NULL COMMENT '账号可用状态',
+                            PRIMARY KEY (`cus_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='顾客';
 
 -- ----------------------------
@@ -643,20 +741,20 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods` (
-  `goods_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品编号',
-  `category_id` bigint(20) DEFAULT NULL COMMENT '所属类别',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品名',
-  `img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品图',
-  `unit_price` double NOT NULL COMMENT '商品单价',
-  `unit` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品计量单位',
-  `status` int(11) DEFAULT NULL COMMENT '商品状态',
-  `weight` double DEFAULT NULL COMMENT '商品重量',
-  `onsale_time` datetime DEFAULT NULL COMMENT '商品销售时间',
-  `inventory` double DEFAULT NULL COMMENT '商品库存',
-  `sale_count` int(11) DEFAULT '0' COMMENT '商品已销售数量',
-  PRIMARY KEY (`goods_id`),
-  KEY `FK_Reference_19` (`category_id`),
-  CONSTRAINT `FK_Reference_19` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
+                         `goods_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品编号',
+                         `category_id` bigint(20) DEFAULT NULL COMMENT '所属类别',
+                         `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品名',
+                         `img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '商品图',
+                         `unit_price` double NOT NULL COMMENT '商品单价',
+                         `unit` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品计量单位',
+                         `status` int(11) DEFAULT NULL COMMENT '商品状态',
+                         `weight` double DEFAULT NULL COMMENT '商品重量',
+                         `onsale_time` datetime DEFAULT NULL COMMENT '商品销售时间',
+                         `inventory` double DEFAULT NULL COMMENT '商品库存',
+                         `sale_count` int(11) DEFAULT '0' COMMENT '商品已销售数量',
+                         PRIMARY KEY (`goods_id`),
+                         KEY `FK_Reference_19` (`category_id`),
+                         CONSTRAINT `FK_Reference_19` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10012 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='商品信息';
 
 -- ----------------------------

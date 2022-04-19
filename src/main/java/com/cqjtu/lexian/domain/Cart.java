@@ -13,7 +13,7 @@ import java.util.List;
 public class Cart {
   @Column(name = "cart_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int cartId;
 
   @OneToOne(fetch = FetchType.EAGER)

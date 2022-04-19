@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class RecAddr {
   @Column(name = "recaddr_id")
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int recaddrId;
 
   @Column(name = "cus_id")
