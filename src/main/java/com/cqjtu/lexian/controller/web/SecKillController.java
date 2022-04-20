@@ -51,14 +51,6 @@ public class SecKillController  implements InitializingBean {
             response.setStatus(SESSION_ERROR.getCode());
             return response;
         }
-//		//使用RateLimiter 限流
-//		RateLimiter rateLimiter = RateLimiter.create(10);
-//		//判断能否在1秒内得到令牌，如果不能则立即返回false，不会阻塞程序
-//		if (!rateLimiter.tryAcquire(1000, TimeUnit.MILLISECONDS)) {
-//			System.out.println("短期无法获取令牌，真不幸，排队也瞎排");
-//			return ResultGeekQ.error(CodeMsg.MIAOSHA_FAIL);
-//
-//		}
 
         //是否已经秒杀到
         SeckillOrder order = seckillOrderService.getMiaoshaOrderByUserIdGoodsId(Long.valueOf(user.getCusId()), goodsId);
@@ -67,16 +59,9 @@ public class SecKillController  implements InitializingBean {
             response.setStatus(REPEATE_MIAOSHA.getCode());
             return response;
         }
-//        //内存标记，减少redis访问
-//        boolean over = localOverMap.get(goodsId);
-//        if (over) {
-//            result.withError(MIAO_SHA_OVER.getCode(), MIAO_SHA_OVER.getMessage());
-//            return result;
-//        }
         // reduce stock in redis
         Long stock = redisService.decr(GoodsKey.getMiaoshaGoodsStock, "" + goodsId);
         if (stock < 0) {
-//            localOverMap.put(goodsId, true);
             response.setMsg(MIAO_SHA_OVER.getMessage());
             response.setStatus(MIAO_SHA_OVER.getCode());
             return response;
@@ -100,7 +85,6 @@ public class SecKillController  implements InitializingBean {
         }
         for (SeckillGoods goods : goodsList) {
             redisService.set(GoodsKey.getMiaoshaGoodsStock, "" + goods.getGoodsId(), goods.getStockCount());
-//            localOverMap.put(goods.getId(), false);
         }
     }
 }
