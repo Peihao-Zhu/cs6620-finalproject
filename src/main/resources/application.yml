@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: Zhupeihao123
-    url: jdbc:mysql://localhost:3306/fresh_food?serverTimezone=PST&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: admin
+    password: finalproject
+    url: jdbc:mysql://final-project.cugkyporweg7.us-west-2.rds.amazonaws.com:3306/fresh_food?serverTimezone=PST&characterEncoding=utf8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
   resources:
     static-locations: classpath:/webapp/page/
   mvc:
